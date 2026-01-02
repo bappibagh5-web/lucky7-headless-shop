@@ -1,4 +1,4 @@
-import { getCategories } from "../../lib/woo";
+import { getCategories } from "../lib/woo";
 
 export default async function ShopPage() {
   const categories = await getCategories();
