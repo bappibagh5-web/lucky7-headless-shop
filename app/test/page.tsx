@@ -1,4 +1,4 @@
-import { getCategories, getProducts } from "../../../lib/woo";
+import { getCategories, getProducts } from "../../lib/woo";
 
 const format = (value: unknown) => JSON.stringify(value, null, 2);
 
