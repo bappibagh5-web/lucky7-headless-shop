@@ -23,7 +23,7 @@ export default async function ProductCategoryPage({
 
   return (
     <main>
-      <h1>Category: {slug}</h1>
+      <h1>Category: {JSON.stringify(params)}</h1>
 
       {productsInCategory.length === 0 && (
         <p>No products found in this category.</p>
