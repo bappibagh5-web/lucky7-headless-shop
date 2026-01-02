@@ -10,22 +10,28 @@ export default async function ProductCategoryPage({
   const { slug } = params;
 
   const products = await getProducts();
+
   const productsInCategory = Array.isArray(products)
-    ? products.filter(
-        (product: any) =>
-          Array.isArray(product.categories) &&
-          product.categories.some((category: any) => category.slug === slug),
-      )
+    ? products.filter((product: any) => {
+        const categories = product.taxonomy_terms?.product_cat;
+        return (
+          Array.isArray(categories) &&
+          categories.some((category: any) => category.slug === slug)
+        );
+      })
     : [];
 
   return (
     <main>
       <h1>Category: {slug}</h1>
+
+      {productsInCategory.length === 0 && (
+        <p>No products found in this category.</p>
+      )}
+
       <ul>
         {productsInCategory.map((product: any) => (
-          <li key={product.id ?? product.slug ?? product.name}>
-            {product.name}
-          </li>
+          <li key={product.id}>{product.name}</li>
         ))}
       </ul>
     </main>
