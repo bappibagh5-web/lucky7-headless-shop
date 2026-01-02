@@ -3,8 +3,12 @@ import { NextRequest, NextResponse } from 'next/server';
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // Only protect /shop routes
-  if (!pathname.startsWith('/shop')) {
+  // Allow Next.js internals and static assets
+  if (
+    pathname.startsWith('/_next') ||
+    pathname.startsWith('/favicon') ||
+    pathname.startsWith('/robots.txt')
+  ) {
     return NextResponse.next();
   }
 
@@ -13,19 +17,19 @@ export function middleware(request: NextRequest) {
     .getAll()
     .some((cookie) => cookie.name.startsWith('wordpress_logged_in_'));
 
-  // If not logged in, redirect to locked page
+  // If not logged in, redirect to WordPress locked page
   if (!isLoggedIn) {
-    const redirectUrl = new URL(
-      '/wholesale-distributor-partner/',
-      request.url
+    return NextResponse.redirect(
+      new URL(
+        'https://lucky7distribution.com/wholesale-distributor-partner/'
+      )
     );
-    return NextResponse.redirect(redirectUrl);
   }
 
   return NextResponse.next();
 }
 
-// Apply middleware only to /shop routes
+// Apply middleware to ALL routes
 export const config = {
-  matcher: ['/shop/:path*'],
+  matcher: ['/:path*'],
 };
